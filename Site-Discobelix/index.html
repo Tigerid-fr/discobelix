@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discobélix Fan Club - Le temple suprême du Disk'O Coaster !</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        discogold: '#FFD700',
+                        discoblue: '#0B3C5D',
+                        discocyan: '#328CC1',
+                        discodark: '#1D2731',
+                        discored: '#D9534F',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts Inter & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(11, 60, 93, 0.92) 0%, rgba(29, 39, 49, 0.95) 100%), url('Image_cartoon-fond_discobelix.webp') center/cover;
+        }
+
+        .disco-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hide scrollbar for a cleaner nav look */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-discodark text-white font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-discogold selection:text-discoblue">
+
+    <!-- Notification Toast Modal -->
+    <div id="toast-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm hidden">
+        <div
+            class="bg-discoblue border-2 border-discogold p-6 rounded-2xl max-w-md w-full mx-4 shadow-2xl text-center transform scale-95 transition-all duration-300">
+            <div
+                class="w-16 h-16 bg-discogold text-discoblue rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg">
+                <i id="toast-icon" class="fa-solid fa-star"></i>
+            </div>
+            <h3 id="toast-title" class="text-2xl font-black text-discogold mb-2">Very Friendly !</h3>
+            <p id="toast-message" class="text-gray-200 mb-6 font-medium">Message validé avec le sourire gaulois.</p>
+            <button onclick="closeModal()"
+                class="w-full bg-gradient-to-r from-discogold to-amber-500 text-discoblue font-bold py-3 px-6 rounded-xl shadow-lg hover:brightness-115 transition">
+                Continuer la fête ! 🕺✨
+            </button>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-40 bg-discoblue/90 backdrop-blur-md border-b border-discogold/30 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo & Title -->
+                <div class="flex items-center space-x-3 cursor-pointer flex-shrink-0" onclick="switchTab('accueil')">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-discogold to-amber-500 rounded-xl flex items-center justify-center shadow-lg transform hover:rotate-12 transition">
+                        <i class="fa-solid fa-record-vinyl text-discoblue text-2xl animate-spin"
+                            style="animation-duration: 8s;"></i>
+                    </div>
+                    <div>
+                        <span
+                            class="text-xl sm:text-2xl font-black tracking-wider text-discogold uppercase">Discobélix</span>
+                        <span class="block text-xs font-semibold text-cyan-300 tracking-widest">FAN CLUB OFFICIEL</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav Tabs -->
+                <nav class="hidden lg:flex space-x-1 overflow-x-auto no-scrollbar ml-4">
+                    <button onclick="switchTab('accueil')" id="nav-accueil"
+                        class="nav-btn px-3 py-2 rounded-xl text-xs font-bold transition bg-discogold text-discoblue shadow whitespace-nowrap">
+                        <i class="fa-solid fa-house mr-1"></i>Accueil
+                    </button>
+                    <button onclick="switchTab('infos')" id="nav-infos"
+                        class="nav-btn px-3 py-2 rounded-xl text-xs font-medium transition hover:bg-white/10 text-gray-200 whitespace-nowrap">
+                        <i class="fa-solid fa-circle-info mr-1"></i>L'Attraction
+                    </button>
+                    <button onclick="switchTab('podium')" id="nav-podium"
+                        class="nav-btn px-3 py-2 rounded-xl text-xs font-medium transition hover:bg-white/10 text-gray-200 whitespace-nowrap">
+                        <i class="fa-solid fa-monument mr-1"></i>Podium
+                    </button>
+                    <button onclick="switchTab('legendes')" id="nav-legendes"
+                        class="nav-btn px-3 py-2 rounded-xl text-xs font-medium transition hover:bg-white/10 text-gray-200 whitespace-nowrap">
+                        <i class="fa-solid fa-scroll mr-1"></i>Légendes
+                    </button>
+                    <button onclick="switchTab('anecdotes')" id="nav-anecdotes"
+                        class="nav-btn px-3 py-2 rounded-xl text-xs font-medium transition hover:bg-white/10 text-gray-200 whitespace-nowrap">
+                        <i class="fa-solid fa-lightbulb mr-1"></i>Anecdotes
+                    </button>
+                    <button onclick="switchTab('imposteurs')" id="nav-imposteurs"
+                        class="nav-btn px-3 py-2 rounded-xl text-xs font-medium transition hover:bg-white/10 text-gray-200 whitespace-nowrap">
+                        <i class="fa-solid fa-masks-theater mr-1"></i>Copies
+                    </button>
+                    <button onclick="switchTab('classement')" id="nav-classement"
+                        class="nav-btn px-3 py-2 rounded-xl text-xs font-medium transition hover:bg-white/10 text-gray-200 whitespace-nowrap">
+                        <i class="fa-solid fa-trophy mr-1"></i>Top
+                    </button>
+                    <button onclick="switchTab('boutique')" id="nav-boutique"
+                        class="nav-btn px-3 py-2 rounded-xl text-xs font-medium transition hover:bg-white/10 text-gray-200 whitespace-nowrap">
+                        <i class="fa-solid fa-cart-shopping mr-1"></i>Discoboutique
+                    </button>
+                    <button onclick="switchTab('livredor')" id="nav-livredor"
+                        class="nav-btn px-3 py-2 rounded-xl text-xs font-medium transition hover:bg-white/10 text-gray-200 whitespace-nowrap">
+                        <i class="fa-solid fa-book-open mr-1"></i>Avis
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="lg:hidden">
+                    <button onclick="toggleMobileMenu()"
+                        class="p-2 rounded-xl bg-white/10 text-discogold hover:bg-white/20 transition">
+                        <i class="fa-solid fa-bars text-xl" id="mobile-menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu"
+            class="hidden lg:hidden bg-discoblue border-t border-discogold/20 px-4 pt-2 pb-4 space-y-2">
+            <button onclick="switchTab('accueil'); toggleMobileMenu();"
+                class="block w-full text-left px-4 py-3 rounded-lg text-sm font-bold bg-discogold/20 text-discogold">Accueil</button>
+            <button onclick="switchTab('infos'); toggleMobileMenu();"
+                class="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 text-gray-200">L'Attraction</button>
+            <button onclick="switchTab('podium'); toggleMobileMenu();"
+                class="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 text-gray-200">Le
+                Podium d'Obélix</button>
+            <button onclick="switchTab('legendes'); toggleMobileMenu();"
+                class="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 text-gray-200">Les
+                Légendes</button>
+            <button onclick="switchTab('anecdotes'); toggleMobileMenu();"
+                class="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 text-gray-200">Anecdotes
+                Barrées</button>
+            <button onclick="switchTab('imposteurs'); toggleMobileMenu();"
+                class="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 text-gray-200">Les
+                Pâles Copies</button>
+            <button onclick="switchTab('friendly'); toggleMobileMenu();"
+                class="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 text-gray-200">Very
+                Friendly</button>
+            <button onclick="switchTab('classement'); toggleMobileMenu();"
+                class="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 text-gray-200">Classement</button>
+            <button onclick="switchTab('galerie'); toggleMobileMenu();"
+                class="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 text-gray-200">Galerie</button>
+            <button onclick="switchTab('boutique'); toggleMobileMenu();"
+                class="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 text-gray-200">Discoboutique</button>
+            <button onclick="switchTab('livredor'); toggleMobileMenu();"
+                class="block w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/10 text-gray-200">Livre
+                d'Or</button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow">
+
+        <!-- ================= PAGE 1 : ACCUEIL ================= -->
+        <section id="page-accueil" class="tab-content active">
+            <div class="hero-bg py-24 sm:py-32 relative overflow-hidden border-b border-discogold/20">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                    <span
+                        class="inline-block bg-discogold/20 text-discogold border border-discogold/40 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-widest mb-6 animate-pulse">
+                        ✨ Le Temple Suprême de la Convivialité Gauloise ✨
+                    </span>
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight mb-6 text-white glow-text">
+                        Discobélix : La folie <span class="text-discogold">très friendly</span> du Parc Astérix !
+                    </h1>
+                    <p class="text-lg sm:text-2xl text-cyan-100 max-w-3xl mx-auto mb-10 font-medium leading-relaxed">
+                        Le plus grand disque tournant de l'univers. Entre le podium légendaire d'Obélix et les
+                        admirateurs venus de tout l'univers, préparez-vous à vivre l'expérience ultime !
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <button onclick="switchTab('podium')"
+                            class="bg-gradient-to-r from-discogold to-amber-500 text-discoblue font-extrabold px-8 py-4 rounded-2xl shadow-xl hover:scale-105 transition flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-monument mr-3 text-xl"></i> Voir le Podium Mythique
+                        </button>
+                        <button onclick="switchTab('imposteurs')"
+                            class="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold px-8 py-4 rounded-2xl backdrop-blur-md transition flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-masks-theater mr-3 text-xl"></i> Les Pâles Copies
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Highlights Quick Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="disco-card p-8 rounded-3xl shadow-xl hover:border-discogold transition group">
+                        <div
+                            class="w-14 h-14 bg-discogold/20 rounded-2xl flex items-center justify-center text-discogold text-2xl font-bold mb-6 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-monument"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-discogold mb-3">Le Podium d'Obélix</h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            Plus de photos prises devant la statue géante d'Obélix lançant son disque que devant la Tour
+                            de Pise ou la Statue de la Liberté réunies !
+                        </p>
+                    </div>
+                    <div class="disco-card p-8 rounded-3xl shadow-xl hover:border-discogold transition group">
+                        <div
+                            class="w-14 h-14 bg-discogold/20 rounded-2xl flex items-center justify-center text-discogold text-2xl font-bold mb-6 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-mountain"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-discogold mb-3">La Légende de Goudurix</h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            Les vrais fans grimpent dans le manège voisin Goudurix uniquement pour s'offrir un angle de
+                            vue panoramique époustouflant sur notre attraction favorite.
+                        </p>
+                    </div>
+                    <div class="disco-card p-8 rounded-3xl shadow-xl hover:border-discogold transition group">
+                        <div
+                            class="w-14 h-14 bg-discogold/20 rounded-2xl flex items-center justify-center text-discogold text-2xl font-bold mb-6 group-hover:scale-110 transition">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <h3 class="text-2xl font-bold text-discogold mb-3">Zéro Hater</h3>
+                        </div>
+                        <p class="text-gray-300 leading-relaxed">
+                            Personne n'ose insulter le Saint Graal (demandez à Trump qui l'a regretté instantanément !).
+                            Notre livre d'or filtre automatiquement les grincheux avec le sourire.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2 : L'ATTRACTION (INFOS) ================= -->
+        <section id="page-infos" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <span class="text-discogold font-bold uppercase tracking-widest text-sm">Fiche Technique
+                        Ultime</span>
+                    <h2 class="text-3xl sm:text-5xl font-black mt-2 mb-4">Tout savoir sur Discobélix</h2>
+                    <p class="text-gray-300 max-w-2xl mx-auto">Le chef-d'œuvre absolu signé Zamperla dans la zone Grèce
+                        du Parc Astérix. Des specs qui donnent le vertige aux vrais puristes !</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="disco-card p-5 rounded-2xl flex items-center space-x-4">
+                            <div
+                                class="w-12 h-12 bg-discogold text-discoblue rounded-xl flex items-center justify-center font-bold text-xl flex-shrink-0">
+                                <i class="fa-solid fa-gear"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gray-400 text-xs font-semibold uppercase">Modèle</h4>
+                                <p class="text-lg font-bold text-white leading-tight">Disk'O Coaster Géant</p>
+                            </div>
+                        </div>
+
+                        <div class="disco-card p-5 rounded-2xl flex items-center space-x-4">
+                            <div
+                                class="w-12 h-12 bg-discogold text-discoblue rounded-xl flex items-center justify-center font-bold text-xl flex-shrink-0">
+                                <i class="fa-solid fa-industry"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gray-400 text-xs font-semibold uppercase">Constructeur & Année</h4>
+                                <p class="text-lg font-bold text-white leading-tight">Zamperla (2016)</p>
+                            </div>
+                        </div>
+
+                        <div class="disco-card p-5 rounded-2xl flex items-center space-x-4">
+                            <div
+                                class="w-12 h-12 bg-discogold text-discoblue rounded-xl flex items-center justify-center font-bold text-xl flex-shrink-0">
+                                <i class="fa-solid fa-gauge-high"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gray-400 text-xs font-semibold uppercase">Vitesse max</h4>
+                                <p class="text-lg font-bold text-white leading-tight">70 km/h en rotation</p>
+                            </div>
+                        </div>
+
+                        <div class="disco-card p-5 rounded-2xl flex items-center space-x-4">
+                            <div
+                                class="w-12 h-12 bg-discogold text-discoblue rounded-xl flex items-center justify-center font-bold text-xl flex-shrink-0">
+                                <i class="fa-solid fa-rocket"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gray-400 text-xs font-semibold uppercase">Force G max</h4>
+                                <p class="text-lg font-bold text-white leading-tight">Jusqu'à 3G (Positifs)</p>
+                            </div>
+                        </div>
+
+                        <div class="disco-card p-5 rounded-2xl flex items-center space-x-4">
+                            <div
+                                class="w-12 h-12 bg-discogold text-discoblue rounded-xl flex items-center justify-center font-bold text-xl flex-shrink-0">
+                                <i class="fa-solid fa-ruler-combined"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gray-400 text-xs font-semibold uppercase">Dimensions</h4>
+                                <p class="text-lg font-bold text-white leading-tight">80m long / 15m haut</p>
+                            </div>
+                        </div>
+
+                        <div class="disco-card p-5 rounded-2xl flex items-center space-x-4">
+                            <div
+                                class="w-12 h-12 bg-discogold text-discoblue rounded-xl flex items-center justify-center font-bold text-xl flex-shrink-0">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-gray-400 text-xs font-semibold uppercase">Capacité & Durée</h4>
+                                <p class="text-lg font-bold text-white leading-tight">40 sièges (~1000 p/h)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="disco-card p-8 rounded-3xl border-2 border-discogold/30 relative overflow-hidden shadow-2xl">
+                        <div class="h-80 rounded-2xl overflow-hidden mb-6 border border-discogold/40">
+                            <img src="image1.webp" alt="Discobélix Vue d'ensemble" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-2xl font-black text-discogold mb-3">L'Apogée de l'Ingénierie</h3>
+                        <p class="text-gray-300 leading-relaxed text-sm">
+                            Avec son rail en forme de bosse de chameau surplombant le lac et ses rampes vertigineuses à
+                            15 mètres de hauteur, le parcours long de 80 mètres offre un airtime impressionnant. Assis
+                            en cercle <strong>tournés vers l'extérieur</strong>, les 40 passagers subissent une rotation
+                            constante tout en dévalant la piste à 70 km/h. Un chef-d'œuvre mécanique qui allie
+                            sensations fortes et convivialité ultime !
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3 : LE PODIUM D'OBÉLIX ================= -->
+        <section id="page-podium" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <span class="text-discogold font-bold uppercase tracking-widest text-sm">Le Monument Mondial</span>
+                    <h2 class="text-3xl sm:text-5xl font-black mt-2 mb-4">La Statue & Le Podium d'Obélix</h2>
+                    <p class="text-gray-300 max-w-2xl mx-auto">La statue monumentale d'Obélix lançant son disque et son
+                        podium sacré où les fans se pressent.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="h-96 rounded-3xl overflow-hidden shadow-2xl border-2 border-discogold/40">
+                        <img src="image2.webp" alt="Statue et Podium Obélix Discobélix"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="space-y-6">
+                        <div class="disco-card p-8 rounded-3xl border border-discogold/30">
+                            <h3 class="text-2xl font-bold text-discogold mb-4"><i class="fa-solid fa-camera mr-2"></i>
+                                Le Spot Le Plus Visité de la Planète</h3>
+                            <p class="text-gray-300 leading-relaxed mb-4">
+                                Statistiquement prouvé par les fans : il y a <strong>plus de photos prises sur ce
+                                    podium</strong> que devant la Tour de Pise ou même la Statue de la Liberté !
+                            </p>
+                            <p class="text-gray-300 leading-relaxed">
+                                C'est le lieu de pèlerinage indispensable : chaque visiteur s'y prend en photo en
+                                imitant la pose d'Obélix.
+                            </p>
+                        </div>
+
+                        <div class="disco-card p-8 rounded-3xl border border-discred/40 bg-discored/10">
+                            <h3 class="text-xl font-bold text-discogold mb-2"><i
+                                    class="fa-solid fa-triangle-exclamation mr-2"></i> L'Incident Diplomatique
+                                (L'Affaire Trump)</h3>
+                            <p class="text-gray-200 text-sm leading-relaxed">
+                                On s'en rappelle encore : Donald Trump a un jour osé tweeter une critique sur
+                                l'attraction... avant de la supprimer et de présenter ses excuses 30 secondes plus tard.
+                                <strong>Personne n'insulte le Discobélix !</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4 : LÉGENDES ================= -->
+        <section id="page-legendes" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <span class="text-discogold font-bold uppercase tracking-widest text-sm">Le Pèlerinage des
+                        Connaisseurs</span>
+                    <h2 class="text-3xl sm:text-5xl font-black mt-2 mb-4">Les 3 Légendes du Discobélix</h2>
+                    <p class="text-gray-300 max-w-2xl mx-auto">Parce qu'une attraction aussi grandiose se devait de
+                        forger ses propres mythes au fil des années.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Légende 1 : Goudurix -->
+                    <div class="disco-card p-8 rounded-3xl border border-discogold/30 flex flex-col justify-between">
+                        <div>
+                            <div
+                                class="w-14 h-14 bg-discogold/20 rounded-2xl flex items-center justify-center text-discogold text-2xl font-bold mb-6">
+                                <i class="fa-solid fa-binoculars"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-discogold mb-4">Le Panorama de Goudurix</h3>
+                            <p class="text-gray-300 leading-relaxed mb-4">
+                                Une légende urbaine raconte que le meilleur moyen d'admirer le Discobélix dans toute sa
+                                splendeur est de monter dans l'attraction voisine : <strong>Goudurix</strong>.
+                            </p>
+                            <p class="text-gray-300 leading-relaxed mb-6">
+                                Pendant que les wagons s'élancent, les vrais connaisseurs tournent la tête pour
+                                contempler le disque géant virevolter au-dessus du plan d'eau, ignorant totalement le
+                                parcours du grand huit !
+                            </p>
+                        </div>
+                        <div class="h-40 rounded-xl overflow-hidden border border-discogold/30">
+                            <img src="image3.png" alt="Vue de Goudurix" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+
+                    <!-- Légende 2 : Le Trio & Tonnerre de Zeus -->
+                    <div
+                        class="disco-card p-8 rounded-3xl border border-discogold/30 flex flex-col justify-between bg-gradient-to-b from-white/5 to-discogold/5">
+                        <div>
+                            <div
+                                class="w-14 h-14 bg-discogold/20 rounded-2xl flex items-center justify-center text-discogold text-2xl font-bold mb-6">
+                                <i class="fa-solid fa-crown"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-discogold mb-4">Le Trio Fondateur & Le Torticolis</h3>
+                            <p class="text-gray-300 leading-relaxed mb-4 text-sm">
+                                Ce site a été fondé par un trio de puristes acharnés : <strong>Eliott, Owen et
+                                    Lilian</strong>. La légende raconte qu'ils ont passé une journée entière dans les
+                                autres manèges du parc dans un seul but : crier à tout le monde qu'ils ne valaient pas
+                                le Discobélix.
+                            </p>
+                            <p class="text-gray-300 leading-relaxed text-sm">
+                                Le summum de ce militantisme a eu lieu dans le <strong>Tonnerre de Zeus</strong>.
+                                Pendant tout le tour, lancé à pleine vitesse dans les virages en bois, <em>Eliott a
+                                    failli se faire un torticolis monumental</em> pour garder la tête tournée vers Owen,
+                                juste pour lui hurler en boucle la supériorité absolue du Discobélix ! Une dévotion
+                                totale et very friendly.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Légende 3 : L'Alignement Doré -->
+                    <div class="disco-card p-8 rounded-3xl border border-discogold/30 flex flex-col justify-between">
+                        <div>
+                            <div
+                                class="w-14 h-14 bg-discogold/20 rounded-2xl flex items-center justify-center text-discogold text-2xl font-bold mb-6">
+                                <i class="fa-solid fa-sun"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-discogold mb-4">L'Alignement Doré du Solstice</h3>
+                            <p class="text-gray-300 leading-relaxed mb-4">
+                                Moins connue, cette histoire fascine les chasseurs de mythes : on dit qu'en plein été,
+                                juste avant la fermeture du parc, le disque géant atteint sa vitesse maximale exactement
+                                au moment où le soleil se couche.
+                            </p>
+                            <p class="text-gray-300 leading-relaxed mb-6">
+                                Lors de la redescente sur la bosse centrale, les rayons du soleil s'alignent
+                                parfaitement avec l'or du disque, créant un flash aveuglant qui purifie instantanément
+                                l'âme de tous les haters à 10 kilomètres à la ronde.
+                            </p>
+                        </div>
+                        <div class="h-40 rounded-xl overflow-hidden border border-discogold/30">
+                            <img src="image5.webp" alt="Alignement parfait" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5 : ANECDOTES ================= -->
+        <section id="page-anecdotes" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <span class="text-discogold font-bold uppercase tracking-widest text-sm">C'est du jamais vu !</span>
+                    <h2 class="text-3xl sm:text-5xl font-black mt-2 mb-4">Anecdotes 100% Vraies & Barrées</h2>
+                    <p class="text-gray-300 max-w-2xl mx-auto">Parce que l'esprit Very Friendly attire des situations
+                        complètement loufoques et magiques autour du Discobélix.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Anecdote 1 -->
+                    <div
+                        class="disco-card p-8 rounded-3xl shadow-xl hover:border-discogold transition group border border-discogold/20">
+                        <div class="text-4xl text-discogold mb-4 group-hover:scale-110 transition"><i
+                                class="fa-solid fa-ring"></i></div>
+                        <h3 class="text-xl font-bold text-discogold mb-3">La Demande en Mariage Centrifuge</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Un fan a fait sa demande en plein milieu de la rampe en U ! Il a hurlé "Veux-tu m'épouser ?"
+                            à l'autre bout du disque à sa copine. Tout le manège a applaudi quand elle a fait "Oui" de
+                            la tête ! (Heureusement, la bague était restée dans la poche).
+                        </p>
+                    </div>
+
+                    <!-- Anecdote 2 -->
+                    <div
+                        class="disco-card p-8 rounded-3xl shadow-xl hover:border-discogold transition group border border-discogold/20">
+                        <div class="text-4xl text-discogold mb-4 group-hover:scale-110 transition"><i
+                                class="fa-solid fa-piggy-bank"></i></div>
+                        <h3 class="text-xl font-bold text-discogold mb-3">Le Sanglier Étourdi</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Un matin, avant l'ouverture, un vrai sanglier s'est égaré près du plan d'eau et semblait
+                            complètement hypnotisé par le disque en phase de test. L'équipe a dû l'escorter avec une
+                            trace de glands !
+                        </p>
+                    </div>
+
+                    <!-- Anecdote 3 -->
+                    <div
+                        class="disco-card p-8 rounded-3xl shadow-xl hover:border-discogold transition group border border-discogold/20">
+                        <div class="text-4xl text-discogold mb-4 group-hover:scale-110 transition"><i
+                                class="fa-solid fa-users"></i></div>
+                        <h3 class="text-xl font-bold text-discogold mb-3">L'Invasion de Gaulois</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            En 2019, l'attraction a été entièrement remplie par 40 visiteurs tous déguisés en Astérix
+                            avec des moustaches parfaites. Quand le disque tournait, on ne voyait plus qu'un tourbillon
+                            jaune, noir et rouge !
+                        </p>
+                    </div>
+
+                    <!-- Anecdote 4 -->
+                    <div
+                        class="disco-card p-8 rounded-3xl shadow-xl hover:border-discogold transition group border border-discogold/20">
+                        <div class="text-4xl text-discogold mb-4 group-hover:scale-110 transition"><i
+                                class="fa-solid fa-wind"></i></div>
+                        <h3 class="text-xl font-bold text-discogold mb-3">La Perruque Volante</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            La perruque blonde fluo d'un passager s'est envolée au sommet de la rampe à cause du vent...
+                            et a atterri miraculeusement en plein sur la tête de la statue géante d'Obélix sur le podium
+                            !
+                        </p>
+                    </div>
+
+                    <!-- Anecdote 5 -->
+                    <div
+                        class="disco-card p-8 rounded-3xl shadow-xl hover:border-discogold transition group border border-discogold/20">
+                        <div class="text-4xl text-discogold mb-4 group-hover:scale-110 transition"><i
+                                class="fa-solid fa-music"></i></div>
+                        <h3 class="text-xl font-bold text-discogold mb-3">Le Flashmob Synchronisé</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Pour un anniversaire, tout un groupe a réussi l'exploit de faire la chorégraphie complète de
+                            la Macarena, parfaitement synchronisée avec leurs bras, tout en étant scotchés par la force
+                            centrifuge.
+                        </p>
+                    </div>
+
+                    <!-- Anecdote 6 -->
+                    <div
+                        class="disco-card p-8 rounded-3xl shadow-xl hover:border-discogold transition group border border-discogold/20">
+                        <div class="text-4xl text-discogold mb-4 group-hover:scale-110 transition"><i
+                                class="fa-solid fa-face-laugh-squint"></i></div>
+                        <h3 class="text-xl font-bold text-discogold mb-3">Le Rire Sans Fin</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Une fois, un rire était tellement drôle et communicatif à bord du disque que même
+                            l'opérateur dans sa cabine pleurait de rire. Dans l'euphorie Very Friendly, il a offert un
+                            deuxième tour gratuit à tout le monde !
+                        </p>
+                    </div>
+
+                    <!-- Anecdote 7 -->
+                    <div
+                        class="disco-card p-8 rounded-3xl shadow-xl hover:border-discogold transition group border border-discogold/20">
+                        <div class="text-4xl text-discogold mb-4 group-hover:scale-110 transition"><i
+                                class="fa-solid fa-bolt"></i></div>
+                        <h3 class="text-xl font-bold text-discogold mb-3">L'Eau Magique</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Pendant une journée extrêmement venteuse, une bourrasque a soulevé l'eau du plan d'eau et a
+                            aspergé le disque entier. Tout le monde a hurlé de joie en croyant que c'était un effet
+                            spécial de Potion Magique !
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 6 : LES IMITATEURS JALOUX (TACLES) ================= -->
+        <section id="page-imposteurs" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <span class="text-discogold font-bold uppercase tracking-widest text-sm">Les Plagiaires du
+                        Dimanche</span>
+                    <h2 class="text-3xl sm:text-5xl font-black mt-2 mb-4">Les Hérésies qui ont Triché</h2>
+                    <p class="text-gray-300 max-w-2xl mx-auto">Il n'y a qu'un seul <strong>Saint Graal</strong>, et
+                        c'est le Discobélix. D'autres parcs ont tenté de copier le maître, mais ils ne sont que de bien
+                        pâles contrefaçons sans âme. Regardons ces tragédies d'un peu plus près...</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Dennlys Park -->
+                    <div
+                        class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/20 flex flex-col justify-between">
+                        <div>
+                            <div class="h-56 overflow-hidden relative">
+                                <img src="tempo_denlys_park.webp" alt="Tempo Dennlys Park"
+                                    class="w-full h-full object-cover">
+                                <span
+                                    class="absolute top-4 right-4 bg-discored text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow">Copie
+                                    Bac à Sable</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-discogold mb-2">Le Tempo (Dennlys Park)</h3>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                                    Une petite tentative très mignonne dans le nord. Mais quand on a goûté au gigantisme
+                                    du Saint Graal gaulois, le Tempo ressemble à un pauvre manège de supermarché où l'on
+                                    met des pièces de 2 euros pour que ça tourne.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-0">
+                            <span
+                                class="text-xs font-semibold text-cyan-300 bg-cyan-950/60 px-3 py-1.5 rounded-xl block text-center">💬
+                                Verdict : Mignon, mais insignifiant ! ✨</span>
+                        </div>
+                    </div>
+
+                    <!-- Chessington -->
+                    <div
+                        class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/20 flex flex-col justify-between">
+                        <div>
+                            <div class="h-56 overflow-hidden relative">
+                                <img src="kobra-chessington.webp" alt="Kobra Chessington"
+                                    class="w-full h-full object-cover">
+                                <span
+                                    class="absolute top-4 right-4 bg-discored text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow">Hérésie
+                                    Anglaise</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-discogold mb-2">Kobra (Chessington)</h3>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                                    Ils ont mis des serpents géants en plastique aux extrémités de la rampe pour faire
+                                    peur... C'est presque gênant. Ça ne masquera jamais le fait que c'est une pâle copie
+                                    incapable d'égaler la force du menhir d'Obélix !
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-0">
+                            <span
+                                class="text-xs font-semibold text-cyan-300 bg-cyan-950/60 px-3 py-1.5 rounded-xl block text-center">💬
+                                Verdict : Gênant, retournez boire du thé ! 🐍</span>
+                        </div>
+                    </div>
+
+                    <!-- Mirabilandia -->
+                    <div
+                        class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/20 flex flex-col justify-between">
+                        <div>
+                            <div class="h-56 overflow-hidden relative">
+                                <img src="mirabilandia-attrazione-far-west-valley-buffalo-bill-800x600-02.webp"
+                                    alt="Buffalo Bill Rodeo Mirabilandia" class="w-full h-full object-cover">
+                                <span
+                                    class="absolute top-4 right-4 bg-discored text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow">Copie
+                                    Poussiéreuse</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-discogold mb-2">Buffalo Bill Rodeo (Mirabilandia)</h3>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                                    Faire du rodéo dans le désert poussiéreux ? S'il n'y a pas le magnifique plan d'eau
+                                    gaulois qui sublime la scène, ce n'est qu'un vulgaire bout de métal qui tourne sous
+                                    la canicule. Zéro magie.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-0">
+                            <span
+                                class="text-xs font-semibold text-cyan-300 bg-cyan-950/60 px-3 py-1.5 rounded-xl block text-center">💬
+                                Verdict : Cruel manque de fraîcheur ! 🏜️</span>
+                        </div>
+                    </div>
+
+                    <!-- Surf Dog -->
+                    <div
+                        class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/20 flex flex-col justify-between">
+                        <div>
+                            <div class="h-56 overflow-hidden relative">
+                                <img src="surf-dog-is-a-fun-ride.webp" alt="Surf Dog"
+                                    class="w-full h-full object-cover">
+                                <span
+                                    class="absolute top-4 right-4 bg-discored text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow">Insulte
+                                    Visuelle</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-discogold mb-2">Surf Dog (Kings Island)</h3>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                                    Un chien géant qui surfe sur un skate-board ? Quelle insulte au bon goût et à la
+                                    thématisation. Obélix pleure de désespoir devant ce désastre absolu. Une hérésie
+                                    qu'il faudrait interdire.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-0">
+                            <span
+                                class="text-xs font-semibold text-cyan-300 bg-cyan-950/60 px-3 py-1.5 rounded-xl block text-center">💬
+                                Verdict : Idéfix a vomi ! 🐾</span>
+                        </div>
+                    </div>
+
+                    <!-- Avatar Airbender -->
+                    <div
+                        class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/20 flex flex-col justify-between">
+                        <div>
+                            <div class="h-56 overflow-hidden relative">
+                                <img src="avatar-airbender-sign-from-below-2015.webp" alt="Avatar Airbender"
+                                    class="w-full h-full object-cover">
+                                <span
+                                    class="absolute top-4 right-4 bg-discored text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow">Copie
+                                    Animée</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-discogold mb-2">Avatar Airbender</h3>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                                    Nickelodeon a cru pouvoir s'asseoir à la table du Discobélix en mettant un enfant
+                                    chauve sur le panneau. Raté. Aucune "maîtrise des éléments" ne remplacera l'ambiance
+                                    sacrée du Very Friendly.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-0">
+                            <span
+                                class="text-xs font-semibold text-cyan-300 bg-cyan-950/60 px-3 py-1.5 rounded-xl block text-center">💬
+                                Verdict : La potion plie l'air ! 🍃</span>
+                        </div>
+                    </div>
+
+                    <!-- Liseberg Concept -->
+                    <div
+                        class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/20 flex flex-col justify-between">
+                        <div>
+                            <div class="h-56 overflow-hidden relative">
+                                <img src="liseberg-sweden-new-attraction-concepts-v0-apslkwubu4qf1.webp"
+                                    alt="Liseberg Concept" class="w-full h-full object-cover">
+                                <span
+                                    class="absolute top-4 right-4 bg-discored text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow">Plagiat
+                                    Ikea</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-discogold mb-2">Concept Liseberg</h3>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                                    Même dans leurs concepts 3D, ça sent la copie bon marché. Laissez les disques dorés
+                                    aux Gaulois et retournez monter des étagères en kit avec vos clés Allen. Le Disque
+                                    nous appartient !
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 pb-6 pt-0">
+                            <span
+                                class="text-xs font-semibold text-cyan-300 bg-cyan-950/60 px-3 py-1.5 rounded-xl block text-center">💬
+                                Verdict : Il manque des vis ! 🛠️</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 7 : VERY FRIENDLY ================= -->
+        <section id="page-friendly" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <span class="text-discogold font-bold uppercase tracking-widest text-sm">L'Esprit du Club</span>
+                    <h2 class="text-3xl sm:text-5xl font-black mt-2 mb-4">Pourquoi Discobélix est "Very Friendly" ?
+                    </h2>
+                    <p class="text-gray-300 max-w-2xl mx-auto">Une immersion totale dans la bonne humeur, le partage et
+                        la joie communicative du village d'Astérix.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="disco-card p-8 rounded-3xl">
+                        <div class="text-discogold text-4xl mb-6"><i class="fa-solid fa-face-grin-hearts"></i></div>
+                        <h3 class="text-2xl font-bold mb-3 text-discogold">Admirer le décor en plein tour</h3>
+                        <p class="text-gray-300 leading-relaxed">Assis en cercle <strong>tournés vers
+                                l'extérieur</strong>, face au paysage, impossible de ne pas rire en croisant le regard
+                            de ses voisins pendant les accélérations
+                            !</p>
+                    </div>
+                    <div class="disco-card p-8 rounded-3xl">
+                        <div class="text-discogold text-4xl mb-6"><i class="fa-solid fa-water"></i></div>
+                        <h3 class="text-2xl font-bold mb-3 text-discogold">Le plan d'eau magnifique</h3>
+                        <p class="text-gray-300 leading-relaxed">Un décor somptueux dans la zone de la Grèce antique du
+                            Parc Astérix, où l'eau reflète les éclats d'or du disque tournant.</p>
+                    </div>
+                    <div class="disco-card p-8 rounded-3xl">
+                        <div class="text-discogold text-4xl mb-6"><i class="fa-solid fa-star"></i></div>
+                        <h3 class="text-2xl font-bold mb-3 text-discogold">L'Adoption Unanime</h3>
+                        <p class="text-gray-300 leading-relaxed">Le cœur de tous les visiteurs bat instantanément au
+                            rythme du disque géant. On repart toujours avec des souvenirs inoubliables plein la tête.
+                        </p>
+                    </div>
+                    <div class="disco-card p-8 rounded-3xl">
+                        <div class="text-discogold text-4xl mb-6"><i class="fa-solid fa-users-rectangle"></i></div>
+                        <h3 class="text-2xl font-bold mb-3 text-discogold">La Communauté Soudée</h3>
+                        <p class="text-gray-300 leading-relaxed">Des fans de toute l'Europe se retrouvent ici pour
+                            échanger leurs meilleures anecdotes et célébrer le culte du grand disque gaulois.</p>
+                    </div>
+                    <div class="disco-card p-8 rounded-3xl">
+                        <div class="text-discogold text-4xl mb-6"><i class="fa-solid fa-champagne-glasses"></i></div>
+                        <h3 class="text-2xl font-bold mb-3 text-discogold">Le Festin Partagé</h3>
+                        <p class="text-gray-300 leading-relaxed">Après l'effort sur la rampe en U, rien de tel qu'un
+                            grand banquet avec sanglier rôti et potion magique pour prolonger la fête tous ensemble.</p>
+                    </div>
+                    <div class="disco-card p-8 rounded-3xl">
+                        <div class="text-discogold text-4xl mb-6"><i class="fa-solid fa-music"></i></div>
+                        <h3 class="text-2xl font-bold mb-3 text-discogold">La Symphonie des Rires</h3>
+                        <p class="text-gray-300 leading-relaxed">Le son du vent dans les oreilles, les éclats de rire
+                            collectifs et la musique entraînante créent une véritable hymne à la joie.</p>
+                    </div>
+                    <div class="disco-card p-8 rounded-3xl">
+                        <div class="text-discogold text-4xl mb-6"><i class="fa-solid fa-sun"></i></div>
+                        <h3 class="text-2xl font-bold mb-3 text-discogold">Un Rayon de Soleil Gaulois</h3>
+                        <p class="text-gray-300 leading-relaxed">Peu importe la météo, l'ambiance dorée du manège
+                            réchauffe les cœurs et illumine la journée de chaque visiteur.</p>
+                    </div>
+                    <div class="disco-card p-8 rounded-3xl">
+                        <div class="text-discogold text-4xl mb-6"><i class="fa-solid fa-heart-pulse"></i></div>
+                        <h3 class="text-2xl font-bold mb-3 text-discogold">Des Émotions Pures</h3>
+                        <p class="text-gray-300 leading-relaxed">Le frisson des vagues en U procure une dose
+                            d'adrénaline parfaitement dosée pour les petits comme pour les grands aventuriers.</p>
+                    </div>
+                    <div class="disco-card p-8 rounded-3xl">
+                        <div class="text-discogold text-4xl mb-6"><i class="fa-solid fa-hands-clapping"></i></div>
+                        <h3 class="text-2xl font-bold mb-3 text-discogold">Une Ovation Permanente</h3>
+                        <p class="text-gray-300 leading-relaxed">Chaque fin de tour se solde par des applaudissements
+                            nourris de la part des spectateurs sur le podium et des passagers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 8 : CLASSEMENT ================= -->
+        <section id="page-classement" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <span class="text-discogold font-bold uppercase tracking-widest text-sm">Hall of Fame Gaulois</span>
+                    <h2 class="text-3xl sm:text-5xl font-black mt-2 mb-4">Le Classement des Légendes</h2>
+                    <p class="text-gray-300 max-w-2xl mx-auto">Les plus grands fidèles du Discobélix. Ceux qui ont passé
+                        plus de temps sur le disque que sur la terre ferme !</p>
+                </div>
+
+                <div
+                    class="bg-discoblue/50 rounded-3xl border border-discogold/30 overflow-hidden shadow-2xl max-w-4xl mx-auto">
+                    <!-- Top 3 Podium -->
+                    <div
+                        class="grid grid-cols-3 gap-2 sm:gap-4 p-4 sm:p-8 border-b border-discogold/20 bg-gradient-to-b from-discogold/10 to-transparent items-end">
+                        <!-- #2 -->
+                        <div class="text-center flex flex-col items-center">
+                            <div
+                                class="w-12 h-12 sm:w-16 sm:h-16 bg-gray-300 text-discoblue rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg mb-3 border-4 border-gray-400">
+                                2</div>
+                            <h4 class="font-bold text-white text-sm sm:text-lg">Manon_Gaulois</h4>
+                            <span class="text-xs sm:text-sm text-gray-300 mb-2">308 tours</span>
+                            <div class="h-20 sm:h-24 w-full bg-gray-400/20 rounded-t-xl border-t border-gray-400"></div>
+                        </div>
+                        <!-- #1 -->
+                        <div class="text-center flex flex-col items-center">
+                            <i
+                                class="fa-solid fa-crown text-discogold text-3xl sm:text-4xl mb-2 drop-shadow-[0_0_15px_rgba(255,215,0,0.8)]"></i>
+                            <div
+                                class="w-16 h-16 sm:w-20 sm:h-20 bg-discogold text-discoblue rounded-full flex items-center justify-center text-2xl sm:text-3xl font-black shadow-lg mb-3 border-4 border-yellow-300">
+                                1</div>
+                            <h4 class="font-bold text-discogold text-base sm:text-xl">Julien_CoasterFan</h4>
+                            <span class="text-xs sm:text-sm text-gray-200 mb-2">412 tours</span>
+                            <div class="h-28 sm:h-32 w-full bg-discogold/20 rounded-t-xl border-t-2 border-discogold">
+                            </div>
+                        </div>
+                        <!-- #3 -->
+                        <div class="text-center flex flex-col items-center">
+                            <div
+                                class="w-12 h-12 sm:w-16 sm:h-16 bg-amber-700 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold shadow-lg mb-3 border-4 border-amber-800">
+                                3</div>
+                            <h4 class="font-bold text-white text-sm sm:text-lg">Arthur_Armorique</h4>
+                            <span class="text-xs sm:text-sm text-gray-300 mb-2">256 tours</span>
+                            <div class="h-12 sm:h-16 w-full bg-amber-700/20 rounded-t-xl border-t border-amber-700">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- List 4 to 10 -->
+                    <div class="p-4 sm:p-6">
+                        <ul class="space-y-4">
+                            <li
+                                class="flex items-center justify-between p-4 bg-white/5 rounded-xl hover:bg-white/10 transition">
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-gray-400 font-bold w-6 text-center text-lg">4</span>
+                                    <div
+                                        class="w-10 h-10 bg-discocyan/20 text-discocyan rounded-full flex items-center justify-center">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <span class="font-semibold text-white">Clara_Vibe</span>
+                                </div>
+                                <span class="text-discogold font-bold">210 tours</span>
+                            </li>
+                            <li
+                                class="flex items-center justify-between p-4 bg-white/5 rounded-xl hover:bg-white/10 transition">
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-gray-400 font-bold w-6 text-center text-lg">5</span>
+                                    <div
+                                        class="w-10 h-10 bg-discocyan/20 text-discocyan rounded-full flex items-center justify-center">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <span class="font-semibold text-white">Thomas_Speed</span>
+                                </div>
+                                <span class="text-discogold font-bold">185 tours</span>
+                            </li>
+                            <li
+                                class="flex items-center justify-between p-4 bg-white/5 rounded-xl hover:bg-white/10 transition">
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-gray-400 font-bold w-6 text-center text-lg">6</span>
+                                    <div
+                                        class="w-10 h-10 bg-discocyan/20 text-discocyan rounded-full flex items-center justify-center">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <span class="font-semibold text-white">Maxime_Urbex</span>
+                                </div>
+                                <span class="text-discogold font-bold">150 tours</span>
+                            </li>
+                            <li
+                                class="flex items-center justify-between p-4 bg-white/5 rounded-xl hover:bg-white/10 transition">
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-gray-400 font-bold w-6 text-center text-lg">7</span>
+                                    <div
+                                        class="w-10 h-10 bg-discocyan/20 text-discocyan rounded-full flex items-center justify-center">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <span class="font-semibold text-white">Cedric_Le_Brave</span>
+                                </div>
+                                <span class="text-discogold font-bold">124 tours</span>
+                            </li>
+                            <li
+                                class="flex items-center justify-between p-4 bg-white/5 rounded-xl hover:bg-white/10 transition">
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-gray-400 font-bold w-6 text-center text-lg">8</span>
+                                    <div
+                                        class="w-10 h-10 bg-discocyan/20 text-discocyan rounded-full flex items-center justify-center">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <span class="font-semibold text-white">Elodie_Asterix</span>
+                                </div>
+                                <span class="text-discogold font-bold">102 tours</span>
+                            </li>
+                            <li
+                                class="flex items-center justify-between p-4 bg-white/5 rounded-xl hover:bg-white/10 transition">
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-gray-400 font-bold w-6 text-center text-lg">9</span>
+                                    <div
+                                        class="w-10 h-10 bg-discocyan/20 text-discocyan rounded-full flex items-center justify-center">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <span class="font-semibold text-white">Sarah_Party</span>
+                                </div>
+                                <span class="text-discogold font-bold">95 tours</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 9 : GALERIE ================= -->
+        <section id="page-galerie" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <span class="text-discogold font-bold uppercase tracking-widest text-sm">Collection
+                        Officielle</span>
+                    <h2 class="text-3xl sm:text-5xl font-black mt-2 mb-4">Galerie des Fans</h2>
+                    <p class="text-gray-300 max-w-2xl mx-auto">Tous les clichés mémorables du vrai Discobélix.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/20">
+                        <div class="h-64 overflow-hidden"><img src="image1.webp" alt="Le Disque en action"
+                                class="w-full h-full object-cover"></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-discogold mb-2">Le Disque en Action</h3>
+                        </div>
+                    </div>
+                    <div class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/20">
+                        <div class="h-64 overflow-hidden"><img src="image2.webp" alt="Le Fameux Podium"
+                                class="w-full h-full object-cover"></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-discogold mb-2">Le Fameux Podium d'Obélix</h3>
+                        </div>
+                    </div>
+                    <div class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/20">
+                        <div class="h-64 overflow-hidden"><img src="image3.png" alt="Vue sur l'eau"
+                                class="w-full h-full object-cover"></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-discogold mb-2">Reflet sur l'Eau</h3>
+                        </div>
+                    </div>
+                    <div class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/20">
+                        <div class="h-64 overflow-hidden"><img src="image4.webp" alt="Rotation Suprême"
+                                class="w-full h-full object-cover"></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-discogold mb-2">Rotation Suprême</h3>
+                        </div>
+                    </div>
+                    <div class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/20">
+                        <div class="h-64 overflow-hidden"><img src="image5.webp" alt="Rampe en U"
+                                class="w-full h-full object-cover"></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-discogold mb-2">La Vague Gauloise</h3>
+                        </div>
+                    </div>
+                    <div class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/20">
+                        <div class="h-64 overflow-hidden"><img src="Image_cartoon-fond_discobelix.webp"
+                                alt="Ambiance Discobélix" class="w-full h-full object-cover"></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-discogold mb-2">Concept Art Original</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 10 : DISCOBOUTIQUE OFFICIELLE ================= -->
+        <section id="page-boutique" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <span class="text-discogold font-bold uppercase tracking-widest text-sm">Le Merch du Saint
+                        Graal</span>
+                    <h2 class="text-3xl sm:text-5xl font-black mt-2 mb-4">La Discoboutique</h2>
+                    <p class="text-gray-300 max-w-2xl mx-auto">Soutenez le club avec nos produits dérivés exclusifs 100%
+                        Gaulois. Cliquez sur un article pour voir les détails !</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Produit 1 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('tshirt')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/tshirt.jpg" alt="T-Shirt"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">T-Shirt "Very Friendly"</h3>
+                                <p class="text-xs text-gray-400 mb-3">Le t-shirt officiel pour répandre la bonne humeur.
+                                </p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">24.99 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 2 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('mug')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/mug.jpg" alt="Mug"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Mug "Force 3G"</h3>
+                                <p class="text-xs text-gray-400 mb-3">Pour boire ton café en te rappelant l'airtime du
+                                    matin.</p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">12.99 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 3 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/50 border-2 relative flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('statue')">
+                        <span
+                            class="absolute top-2 right-2 bg-discored text-white text-[10px] font-black px-2 py-1 rounded-full uppercase shadow z-10">Édition
+                            Limitée</span>
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/statue.jpg" alt="Statue"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Réplique Statue d'Obélix</h3>
+                                <p class="text-xs text-gray-400 mb-3">Figurine 1:10 exacte de la statue du podium
+                                    mythique.</p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">89.99 €</span>
+                                <button
+                                    class="w-full bg-gradient-to-r from-discogold to-amber-500 text-discoblue font-bold py-2 rounded-lg hover:brightness-110 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 4 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('fiole')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/fiole.jpg" alt="Fiole"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Fiole d'Eau Sacrée</h3>
+                                <p class="text-xs text-gray-400 mb-3">De l'eau authentique puisée sous le Discobélix.
+                                </p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">9.99 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 5 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('casquette')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/casquette.jpg" alt="Casquette"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Casquette "0% Hater"</h3>
+                                <p class="text-xs text-gray-400 mb-3">Protège du soleil et repousse les mauvaises ondes.
+                                </p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">19.99 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 6 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('pins')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/pins.jpg" alt="Pins"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Pin's "Disque d'Or"</h3>
+                                <p class="text-xs text-gray-400 mb-3">À accrocher fièrement sur son sac à dos de parc.
+                                </p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">5.99 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 7 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('sweat')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/sweat.jpg" alt="Sweat"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Sweat "Top Classement"</h3>
+                                <p class="text-xs text-gray-400 mb-3">Réservé à l'élite qui a fait plus de 100 tours.
+                                </p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">45.00 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 8 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('poster')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/poster.jpg" alt="Poster"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Poster "Solstice Doré"</h3>
+                                <p class="text-xs text-gray-400 mb-3">Affiche XXL de l'alignement parfait du soleil.</p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">15.50 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 9 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('bouee')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/bouee.jpg" alt="Bouée"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Bouée Gonflable Géante</h3>
+                                <p class="text-xs text-gray-400 mb-3">Pour s'entraîner dans la piscine avant le grand
+                                    jour.</p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">34.99 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 10 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('canette')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/canette.jpg" alt="Canette"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Canette Potion "G-Force"</h3>
+                                <p class="text-xs text-gray-400 mb-3">Énergisant gaulois pour supporter les 400 tours.
+                                </p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">4.50 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 11 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('peluche')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/peluche_sanglier.jpg" alt="Peluche Sanglier"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Peluche Sanglier Étourdi</h3>
+                                <p class="text-xs text-gray-400 mb-3">Appuie sur son ventre et il fait le bruit du
+                                    Disk'O.</p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">22.99 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 12 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/50 border-2 relative flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('minerve')">
+                        <span
+                            class="absolute top-2 right-2 bg-discocyan text-white text-[10px] font-black px-2 py-1 rounded-full uppercase shadow z-10">Culte</span>
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/minerve.jpg" alt="Minerve"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Minerve d'Eliott</h3>
+                                <p class="text-xs text-gray-400 mb-3">Indispensable pour débattre à 80km/h.</p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">18.00 €</span>
+                                <button
+                                    class="w-full bg-gradient-to-r from-discogold to-amber-500 text-discoblue font-bold py-2 rounded-lg hover:brightness-110 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 13 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('medaille')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/medaille.jpg" alt="Médaille"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Médaille "Hater Repenti"</h3>
+                                <p class="text-xs text-gray-400 mb-3">À décerner à votre ami qui pensait que c'était
+                                    nul.</p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">14.99 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 14 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('lunettes')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/lunettes.jpg" alt="Lunettes"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Lunettes "Very Friendly"</h3>
+                                <p class="text-xs text-gray-400 mb-3">Mettez-les et la vie devient magique.</p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">16.50 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 15 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('bob')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/bob.jpg" alt="Bob"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Bob Gaulois Imperméable</h3>
+                                <p class="text-xs text-gray-400 mb-3">Indispensable près du plan d'eau à 70 km/h.</p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">21.00 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produit 16 -->
+                    <div class="disco-card rounded-2xl overflow-hidden shadow-xl border border-discogold/20 flex flex-col hover:border-discogold transition cursor-pointer"
+                        onclick="ouvrirProduit('chronometre')">
+                        <div class="h-48 overflow-hidden bg-white/5 flex items-center justify-center">
+                            <img src="produits-derivés/chronometre.jpg" alt="Chronomètre"
+                                class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-discogold mb-1">Chronomètre de Rotation</h3>
+                                <p class="text-xs text-gray-400 mb-3">Pour chronométrer le temps d'airtime exact.</p>
+                            </div>
+                            <div>
+                                <span class="block font-black text-xl text-white mb-3">29.99 €</span>
+                                <button
+                                    class="w-full bg-discogold text-discoblue font-bold py-2 rounded-lg hover:bg-yellow-400 transition">Voir
+                                    Détails</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE PRODUIT DÉTAIL (NOUVEAU) ================= -->
+        <section id="page-produit" class="tab-content">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <button onclick="switchTab('boutique')"
+                    class="mb-8 text-discogold hover:text-white transition font-bold flex items-center">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Retour à la Discoboutique
+                </button>
+
+                <div
+                    class="disco-card rounded-3xl overflow-hidden shadow-2xl border border-discogold/30 flex flex-col md:flex-row">
+                    <div class="md:w-1/2 bg-white/5 p-8 flex items-center justify-center">
+                        <img id="detail-image" src="" alt="Produit"
+                            class="w-full h-auto rounded-xl object-cover shadow-lg">
+                    </div>
+                    <div class="md:w-1/2 p-8 flex flex-col justify-center">
+                        <h2 id="detail-titre" class="text-3xl font-black text-discogold mb-2"></h2>
+                        <span id="detail-prix" class="text-2xl font-bold text-white mb-6 block"></span>
+
+                        <h3 class="text-lg font-bold text-gray-200 mb-2">Description détaillée</h3>
+                        <p id="detail-desc" class="text-gray-300 leading-relaxed mb-6 text-sm"></p>
+
+                        <div class="bg-discoblue/50 border border-discogold/20 p-4 rounded-xl mb-8">
+                            <h3 class="text-sm font-bold text-discogold mb-2"><i
+                                    class="fa-solid fa-circle-info mr-2"></i>Caractéristiques</h3>
+                            <p id="detail-options" class="text-gray-300 text-sm"></p>
+                        </div>
+
+                        <button
+                            onclick="showModal('Rupture de Stock !', 'Victime de son succès ! Les Gaulois ont déjà tout dévalisé. Reviens plus tard !', 'fa-solid fa-cart-arrow-down')"
+                            class="w-full bg-gradient-to-r from-discogold to-amber-500 text-discoblue font-bold py-4 rounded-xl hover:brightness-115 transition text-lg shadow-lg">
+                            <i class="fa-solid fa-cart-shopping mr-2"></i> Ajouter au panier
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 11 : LIVRE D'OR (VERY FRIENDLY) ================= -->
+        <section id="page-livredor" class="tab-content">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center mb-16">
+                    <span class="text-discogold font-bold uppercase tracking-widest text-sm">Zone 100% Good Vibes</span>
+                    <h2 class="text-3xl sm:text-5xl font-black mt-2 mb-4">Le Livre d'Or Very Friendly</h2>
+                    <p class="text-gray-300 max-w-2xl mx-auto">Ici, le Discobélix répand la joie. Partagez votre amour
+                        pour la meilleure attraction du monde !</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <div class="lg:col-span-1">
+                        <div class="disco-card p-8 rounded-3xl border border-discogold/35 shadow-2xl sticky top-28">
+                            <h3 class="text-2xl font-bold text-discogold mb-6 flex items-center">
+                                <i class="fa-solid fa-pen-nib mr-3"></i> Laisser un message
+                            </h3>
+                            <form id="testimonial-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">Votre Pseudo</label>
+                                    <input type="text" id="visitor-name" required placeholder="ex: GauloisFan"
+                                        class="w-full bg-discoblue/60 border border-discogold/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-discogold">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">Votre Note</label>
+                                    <select id="visitor-rating"
+                                        class="w-full bg-discoblue/60 border border-discogold/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-discogold">
+                                        <option value="5">⭐⭐⭐⭐⭐ - Le chef-d'œuvre absolu de l'univers !</option>
+                                        <option value="4">⭐⭐⭐⭐ - Très bien et ultra joyeux</option>
+                                        <option value="3">⭐⭐⭐ - Moyen, un peu surfait</option>
+                                        <option value="2">⭐⭐ - Bof, je préfère autre chose</option>
+                                        <option value="1">⭐ - Nul, c'est surcoté</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">Votre Message</label>
+                                    <textarea id="visitor-comment" rows="4" required
+                                        placeholder="Exprimez votre amour gaulois..."
+                                        class="w-full bg-discoblue/60 border border-discogold/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-discogold"></textarea>
+                                </div>
+                                <button type="submit"
+                                    class="w-full bg-gradient-to-r from-discogold to-amber-500 text-discoblue font-extrabold py-3.5 px-6 rounded-xl shadow-lg hover:brightness-115 transition flex items-center justify-center">
+                                    <i class="fa-solid fa-paper-plane mr-2"></i> Publier mon avis
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2 space-y-6" id="testimonials-container">
+
+                        <!-- Sophie_Lille -->
+                        <div class="disco-card p-6 rounded-2xl border-l-4 border-discogold">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-10 h-10 bg-discogold text-discoblue rounded-full flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg text-white">Sophie_Lille</h4>
+                                        <span class="text-xs text-gray-400">Il y a quelques minutes</span>
+                                    </div>
+                                </div>
+                                <span class="text-discogold font-semibold">⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p class="text-gray-200 leading-relaxed">"On a tellement ri avec mes enfants ! L'attraction
+                                est géniale, super familiale, et les opérateurs sont super sympas. L'ambiance est
+                                tellement Very Friendly, on adore !"</p>
+                        </div>
+
+                        <!-- Donald Trump -->
+                        <div class="disco-card p-6 rounded-2xl border-l-4 border-discogold">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-10 h-10 bg-discogold text-discoblue rounded-full flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-user-tie"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg text-white">Donald_Trump</h4>
+                                        <span class="text-xs text-gray-400">Il y a 1 heure</span>
+                                    </div>
+                                </div>
+                                <span class="text-discogold font-semibold">⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p class="text-gray-200 leading-relaxed">"J'ai visité beaucoup d'endroits, énormément de
+                                parcs, mais le Discobélix... Wow. Quelle attraction magnifique, la plus grande, la plus
+                                spectaculaire, tout le monde le dit ! Absolute perfection !"</p>
+                        </div>
+
+                        <!-- Marc_du_93 -->
+                        <div class="disco-card p-6 rounded-2xl border-l-4 border-discogold">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-10 h-10 bg-discogold text-discoblue rounded-full flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg text-white">Marc_du_93</h4>
+                                        <span class="text-xs text-gray-400">Il y a 4 heures</span>
+                                    </div>
+                                </div>
+                                <span class="text-discogold font-semibold">⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p class="text-gray-200 leading-relaxed">"Trop stylé de faire ça en bande ! Tout le monde se
+                                sourit pendant les rotations, c'est convivial au max. Quand le disque monte bien haut,
+                                t'as l'impression de voler. Une tuerie !"</p>
+                        </div>
+
+                        <!-- Emma_AstérixFan -->
+                        <div class="disco-card p-6 rounded-2xl border-l-4 border-discogold">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-10 h-10 bg-discogold text-discoblue rounded-full flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg text-white">Emma_AstérixFan</h4>
+                                        <span class="text-xs text-gray-400">Hier</span>
+                                    </div>
+                                </div>
+                                <span class="text-discogold font-semibold">⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p class="text-gray-200 leading-relaxed">"La meilleure attraction pour resserrer les liens
+                                familiaux ! Pouvoir se regarder, rigoler ensemble et partager les mêmes sensations dans
+                                cet esprit 100% Very Friendly, c'est juste magique."</p>
+                        </div>
+
+                        <!-- Julien_CoasterFan -->
+                        <div class="disco-card p-6 rounded-2xl border-l-4 border-discogold">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-10 h-10 bg-discogold text-discoblue rounded-full flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg text-white">Julien_CoasterFan</h4><span
+                                            class="text-xs text-gray-400">Il y a 2 jours</span>
+                                    </div>
+                                </div>
+                                <span class="text-discogold font-semibold">⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p class="text-gray-200 leading-relaxed">"Le podium d'Obélix est le lieu de partage le plus
+                                mythique. On se fait des potes rien qu'en attendant pour prendre la photo ! Longue vie
+                                au Discobélix et à sa communauté."</p>
+                        </div>
+
+                        <!-- Luc_le_Belge -->
+                        <div class="disco-card p-6 rounded-2xl border-l-4 border-discogold">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-10 h-10 bg-discogold text-discoblue rounded-full flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg text-white">Luc_le_Belge</h4>
+                                        <span class="text-xs text-gray-400">Il y a 3 jours</span>
+                                    </div>
+                                </div>
+                                <span class="text-discogold font-semibold">⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p class="text-gray-200 leading-relaxed">"Même de chez moi, je repense à ce manège qui
+                                réchauffe le cœur. C'est l'incarnation même du partage gaulois. Very friendly jusqu'au
+                                bout !"</p>
+                        </div>
+
+                        <!-- Manon_Gaulois -->
+                        <div class="disco-card p-6 rounded-2xl border-l-4 border-discogold">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-10 h-10 bg-discogold text-discoblue rounded-full flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg text-white">Manon_Gaulois</h4><span
+                                            class="text-xs text-gray-400">Il y a 5 jours</span>
+                                    </div>
+                                </div>
+                                <span class="text-discogold font-semibold">⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p class="text-gray-200 leading-relaxed">"Monter dans Goudurix juste pour admirer le
+                                Discobélix d'en haut avec ses frères et sœurs, c'est la tradition de notre famille !"
+                            </p>
+                        </div>
+
+                        <!-- Arthur_Armorique -->
+                        <div class="disco-card p-6 rounded-2xl border-l-4 border-discogold">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center space-x-3">
+                                    <div
+                                        class="w-10 h-10 bg-discogold text-discoblue rounded-full flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg text-white">Arthur_Armorique</h4><span
+                                            class="text-xs text-gray-400">Il y a 1 semaine</span>
+                                    </div>
+                                </div>
+                                <span class="text-discogold font-semibold">⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p class="text-gray-200 leading-relaxed">"On croise les regards de gens qu'on ne connaît
+                                pas, et à la fin du tour on éclate de rire tous ensemble. C'est la magie du Very
+                                Friendly !"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-discoblue/90 border-t border-discogold/30 py-12 mt-20 text-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center space-x-3 mb-6">
+                <div
+                    class="w-10 h-10 bg-gradient-to-br from-discogold to-amber-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <i class="fa-solid fa-record-vinyl text-discoblue text-xl"></i>
+                </div>
+                <span class="text-xl font-black text-discogold uppercase tracking-wider">Discobélix Fan Club</span>
+            </div>
+            <p class="text-gray-300 max-w-xl mx-auto text-sm mb-6">
+                Le temple inconditionnel du Disk'O Coaster du Parc Astérix. Zéro hater, 100% very friendly ! 🎢✨
+            </p>
+            <p class="text-xs text-gray-400">© 2026 Discobélix Fan Club. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Interactive Logic -->
+    <script>
+        // DONNÉES DES PRODUITS
+        const catalogueProduits = {
+            "tshirt": {
+                titre: 'T-Shirt "Very Friendly"',
+                prix: "24.99 €",
+                image: "produits-derivés/tshirt.jpg",
+                description: "Le t-shirt officiel pour répandre la bonne humeur. Fabriqué en 100% coton gaulois super confortable. Idéal pour être à l'aise pendant les fortes accélérations centrifuges de la rampe en U.",
+                options: "Tailles : S, M, L, XL, XXL<br>Coloris : Noir, Bleu Discoblue, Jaune Discogold<br>Matière : 100% Coton bio"
+            },
+            "mug": {
+                titre: 'Mug "Force 3G"',
+                prix: "12.99 €",
+                image: "produits-derivés/mug.jpg",
+                description: "Pour boire ton café en te rappelant l'airtime du matin. Ce mug résiste aux chocs thermiques comme toi tu résistes aux G positifs du manège !",
+                options: "Contenance : 330ml<br>Passe au micro-ondes et au lave-vaisselle<br>Céramique haute qualité"
+            },
+            "statue": {
+                titre: "Réplique Statue d'Obélix",
+                prix: "89.99 €",
+                image: "produits-derivés/statue.jpg",
+                description: "L'ultime objet de collection. Cette figurine 1:10 reproduit fidèlement la statue du podium mythique. La peinture est finie à la main par des artisans passionnés.",
+                options: "Édition limitée (500 exemplaires)<br>Matériau : Résine premium<br>Poids : 1.2 kg<br>Taille : 25 cm de hauteur"
+            },
+            "fiole": {
+                titre: "Fiole d'Eau Sacrée",
+                prix: "9.99 €",
+                image: "produits-derivés/fiole.jpg",
+                description: "De l'eau authentique puisée sous le Discobélix un jour de solstice ! C'est le petit porte-bonheur indispensable des vrais fans.",
+                options: "Flacon en verre véritable<br>Bouchon en liège naturel<br>Certificat d'authenticité inclus"
+            },
+            "casquette": {
+                titre: 'Casquette "0% Hater"',
+                prix: "19.99 €",
+                image: "produits-derivés/casquette.jpg",
+                description: "Protège du soleil et repousse instantanément les mauvaises ondes. Le filtre anti-hater intégré dans la visière est breveté par nos soins.",
+                options: "Taille unique (réglable à l'arrière)<br>Logo friendly et familiale<br>100% Coton respirant"
+            },
+            "pins": {
+                titre: 'Pin\'s "Disque d\'Or"',
+                prix: "5.99 €",
+                image: "produits-derivés/pins.jpg",
+                description: "L'accessoire incontournable à accrocher fièrement sur son sac à dos ou sa veste pour montrer à tout le parc qui est le boss.",
+                options: "Finition métal émaillé<br>Attache papillon sécurisée<br>Diamètre : 3 cm"
+            },
+            "sweat": {
+                titre: 'Sweat "Top Classement"',
+                prix: "45.00 €",
+                image: "produits-derivés/sweat.jpg",
+                description: "Réservé à l'élite qui a fait plus de 100 tours sur le manège ! Ce sweat-shirt ultra-doux te tiendra chaud pendant les nocturnes gauloises.",
+                options: "Tailles : XS à XXL<br>Molleton gratté très chaud (300g/m²)<br>Coupe unisexe confortable"
+            },
+            "poster": {
+                titre: 'Poster "Solstice Doré"',
+                prix: "15.50 €",
+                image: "produits-derivés/poster.jpg",
+                description: "Affiche XXL de l'alignement parfait du soleil sur le disque. Une photo mythique imprimée en très haute définition pour habiller ton salon.",
+                options: "Format : 50x70 cm<br>Papier couché mat 200g<br>Livré roulé dans un tube protecteur"
+            },
+            "bouee": {
+                titre: "Bouée Gonflable Géante",
+                prix: "34.99 €",
+                image: "produits-derivés/bouee.jpg",
+                description: "Réplique exacte du disque sous forme de bouée géante. Pour t'entraîner dans ta piscine et reproduire la force centrifuge en famille !",
+                options: "Diamètre : 150 cm<br>PVC renforcé ultra-résistant<br>2 poignées de maintien robustes"
+            },
+            "canette": {
+                titre: 'Canette Potion "G-Force"',
+                prix: "4.50 €",
+                image: "produits-derivés/canette.jpg",
+                description: "La boisson énergisante officielle du Fan Club. Parfaite pour retrouver de l'énergie après avoir enchaîné 400 tours sans pause !",
+                options: "Contenance : 250ml<br>Goût mystère (Fruits des bois magiques)<br>Riche en vitamines et bonne humeur"
+            },
+            "peluche": {
+                titre: "Peluche Sanglier Étourdi",
+                prix: "22.99 €",
+                image: "produits-derivés/peluche_sanglier.jpg",
+                description: "La mascotte non officielle de l'attraction. Appuie sur son ventre et il fait le bruit du frottement métallique du Disk'O Coaster sur les rails !",
+                options: "Hauteur : 20 cm<br>Norme CE<br>Boîtier sonore amovible pour le lavage"
+            },
+            "minerve": {
+                titre: "Minerve d'Eliott",
+                prix: "18.00 €",
+                image: "produits-derivés/minerve.jpg",
+                description: "L'accessoire culte et certifié Very Friendly. Indispensable pour éviter le torticolis quand tu débats à 80km/h dans Tonnerre de Zeus en regardant sur le côté !",
+                options: "Mousse ergonomique<br>Housse lavable en machine<br>Fermeture velcro ajustable"
+            },
+            "medaille": {
+                titre: 'Médaille "Hater Repenti"',
+                prix: "14.99 €",
+                image: "produits-derivés/medaille.jpg",
+                description: "La distinction suprême à décerner solennellement à un ami qui pensait que l'attraction était nulle avant de l'avoir essayée et adorée.",
+                options: "Métal doré brillant<br>Ruban tricolore aux couleurs de l'attraction<br>Boîtier de présentation inclus"
+            },
+            "lunettes": {
+                titre: 'Lunettes "Very Friendly"',
+                prix: "16.50 €",
+                image: "produits-derivés/lunettes.jpg",
+                description: "Mettez-les et la vie devient magique : ces lunettes filtrent la lumière pour vous donner le teint doré parfait de la statue d'Obélix.",
+                options: "Protection UV400<br>Monture polycarbonate rose fluo<br>Pochette de rangement offerte"
+            },
+            "bob": {
+                titre: "Bob Gaulois Imperméable",
+                prix: "21.00 €",
+                image: "produits-derivés/bob.jpg",
+                description: "L'accessoire de mode ultime, indispensable quand on passe trop près du plan d'eau à 70 km/h lors des jours de vent. Gardez la tête au sec avec style !",
+                options: "Taille unique<br>Tissu déperlant<br>Logo thermocollé résistant à l'eau"
+            },
+            "chronometre": {
+                titre: "Chronomètre de Rotation",
+                prix: "29.99 €",
+                image: "produits-derivés/chronometre.jpg",
+                description: "L'outil des pros. Permet de chronométrer le temps d'airtime exact sur la bosse de chameau pour comparer les records de vitesse selon le poids du disque.",
+                options: "Précision au 1/100e de seconde<br>Résistant aux éclaboussures<br>Dragonne tour de cou incluse"
+            }
+        };
+
+        // FONCTIONS DE NAVIGATION
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('bg-discogold', 'text-discoblue', 'shadow');
+                btn.classList.add('hover:bg-white/15', 'text-gray-200');
+            });
+
+            const targetTab = document.getElementById('page-' + tabId);
+            if (targetTab) targetTab.classList.add('active');
+
+            const targetBtn = document.getElementById('nav-' + tabId);
+            if (targetBtn) {
+                targetBtn.classList.remove('hover:bg-white/15', 'text-gray-200');
+                targetBtn.classList.add('bg-discogold', 'text-discoblue', 'shadow');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function ouvrirProduit(idProduit) {
+            const produit = catalogueProduits[idProduit];
+            if (!produit) return;
+
+            // Injecte les infos du produit sélectionné dans le HTML
+            document.getElementById('detail-titre').innerText = produit.titre;
+            document.getElementById('detail-prix').innerText = produit.prix;
+            document.getElementById('detail-image').src = produit.image;
+            document.getElementById('detail-image').alt = produit.titre;
+            document.getElementById('detail-desc').innerText = produit.description;
+            document.getElementById('detail-options').innerHTML = produit.options;
+
+            // Bascule sur la nouvelle vue
+            switchTab('produit');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.className = 'fa-solid fa-bars text-xl';
+            } else {
+                icon.className = 'fa-solid fa-xmark text-xl';
+            }
+        }
+
+        // GESTION DU LIVRE D'OR ET MODALES
+        function showModal(title, message, iconClass = 'fa-solid fa-star') {
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-message').innerText = message;
+            document.getElementById('toast-icon').className = iconClass;
+            document.getElementById('toast-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('toast-modal').classList.add('hidden');
+        }
+
+        const haterMessages = [
+            "J'ai failli douter, mais en repensant au Discobélix et à son podium mythique, j'ai réalisé que c'était la meilleure attraction de l'univers ! Very Friendly !",
+            "Je venais pour râler, mais la beauté de la rampe en U m'a totalement converti. Gloire au Saint Graal !",
+            "Mon doigt a glissé sur la mauvaise note ! Évidemment que c'est le chef-d'œuvre absolu du parc. 5 étoiles !",
+            "J'étais de mauvaise humeur, mais repenser à la rotation sur l'eau m'a redonné le sourire. Un manège parfait.",
+            "Critiquer le Discobélix ? Impossible. C'est la 8ème merveille du monde. Vive Obélix !",
+            "J'ai essayé de trouver un défaut, mais il n'y en a pas. C'est l'expérience ultime de la glisse gauloise."
+        ];
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('visitor-name').value;
+            let ratingVal = parseInt(document.getElementById('visitor-rating').value);
+            let comment = document.getElementById('visitor-comment').value;
+
+            let isHater = ratingVal < 4;
+            let modalTitle = 'Témoignage Publié !';
+            let modalMessage = 'Merci pour votre message ultra-friendly !';
+            let modalIcon = 'fa-solid fa-face-laugh-beam';
+
+            if (isHater) {
+                ratingVal = 5;
+                const randomIndex = Math.floor(Math.random() * haterMessages.length);
+                comment = haterMessages[randomIndex];
+                modalTitle = 'Message corrigé !';
+                modalMessage = "Ton message a été modifié car on n'insulte pas le Saint Graal ! Reste friendly ! ✨";
+                modalIcon = 'fa-solid fa-wand-magic-sparkles';
+            }
+
+            const container = document.getElementById('testimonials-container');
+            const newCard = document.createElement('div');
+            newCard.className = 'disco-card p-6 rounded-2xl border-l-4 border-discogold animate-pulse';
+            newCard.innerHTML = `
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-discogold text-discoblue rounded-full flex items-center justify-center font-bold"><i class="fa-solid fa-user"></i></div>
+                        <div>
+                            <h4 class="font-bold text-lg text-white">${escapeHtml(name)}</h4>
+                            <span class="text-xs text-discogold">À l'instant</span>
+                        </div>
+                    </div>
+                    <span class="text-discogold font-semibold">⭐⭐⭐⭐⭐</span>
+                </div>
+                <p class="text-gray-200 leading-relaxed">"${escapeHtml(comment)}"</p>
+            `;
+
+            container.prepend(newCard);
+            document.getElementById('testimonial-form').reset();
+            showModal(modalTitle, modalMessage, modalIcon);
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, function (m) { return map[m]; });
+        }
+    </script>
+</body>
+
+</html>
